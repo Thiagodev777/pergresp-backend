@@ -9,8 +9,8 @@ try {
   console.log(err)
 }
 
-router.get('/', (req: Request, res: Response) => {
-  res.send('ok')
+router.get('/', async (req: Request, res: Response) => {
+  res.json({ msg: 'ok' })
 })
 
 export default router
