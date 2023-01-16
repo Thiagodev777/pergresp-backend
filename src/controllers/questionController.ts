@@ -1,13 +1,9 @@
 import { Request, Response } from 'express'
 import { Question } from '../models/Question'
-
-export interface Question {
-  idquestion?: number
-  title: string
-  description: string
-}
+import Helpers from '../helpers/helpers'
 
 const questionController = {
+  /* ===== ROUTER SEARCH ALL ====== */
   async findAll(req: Request, res: Response) {
     try {
       const questions = await Question.findAll({ raw: true })
@@ -20,15 +16,16 @@ const questionController = {
     }
   },
 
+  /* ===== ROUTER SEARCH ONE ====== */
   async findOne(req: Request, res: Response) {
     const id = req.params.id
     if (isNaN(+id)) {
-      return res.status(400).json({ code: '400', msg: 'Invalid data' })
+      return res.status(400).json({ code: 400, msg: 'Invalid data' })
     }
     try {
       const question = await Question.findByPk(id)
       if (!question) {
-        return res.status(404).json({ code: '404', msg: 'Not found' })
+        return res.status(404).json({ code: 404, msg: 'Not found' })
       }
       return res.status(200).json(question)
     } catch (error) {
@@ -39,16 +36,100 @@ const questionController = {
     }
   },
 
+  /* ===== ROUTER CREATE ====== */
   async createQuestion(req: Request, res: Response) {
-    // falta rever o model de perguntas porque ta dando erro na hora de definir o id do usuario pois a chave estrangeira esta definida incorretamente (ID USUARIO)
+    const { title, description, id_user } = req.body
+    if (Helpers.verifyType(title, description, id_user)) {
+      try {
+        const questionCreate = await Question.create({
+          title,
+          description,
+          id_user,
+        })
+        return res.status(200).json(questionCreate)
+      } catch (error) {
+        console.log(error)
+        return res
+          .status(500)
+          .json({ code: 'error', msg: 'Internal Server Error' })
+      }
+    } else {
+      return res.status(400).json({
+        code: 400,
+        msg: 'name, description and user ID are required',
+      })
+    }
   },
 
+  /* ===== ROUTER UPDATE ====== */
   async updateQuestion(req: Request, res: Response) {
-    res.send('Atualizar Pergunta')
+    const id = req.params.id
+    const { title, description } = req.body
+    if (isNaN(+id)) {
+      return res.status(400).json({ code: 400, msg: 'Invalid data' })
+    }
+    if (title || description) {
+      try {
+        const question = await Question.findByPk(id)
+        if (!question) {
+          return res.status(404).json({ code: 404, msg: 'Not found' })
+        }
+        try {
+          await Question.update(
+            {
+              title,
+              description,
+            },
+            { where: { idquestion: id } },
+          )
+          return res.status(200).json({ idquestion: +id, title, description })
+        } catch (error) {
+          console.log(error)
+          return res
+            .status(500)
+            .json({ code: 'error', msg: 'Internal Server Error' })
+        }
+      } catch (error) {
+        console.log(error)
+        return res
+          .status(500)
+          .json({ code: 'error', msg: 'Internal Server Error' })
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ code: 400, msg: 'title or description is required' })
+    }
   },
 
+  /* ===== ROUTER DELETE ====== */
   async deleteQuestion(req: Request, res: Response) {
-    res.send('Deletar Pergunta')
+    const id = req.params.id
+    if (isNaN(+id)) {
+      return res.status(400).json({ code: 400, msg: 'Invalid data' })
+    }
+    try {
+      const question = await Question.findByPk(id)
+      if (!question) {
+        return res.status(404).json({ code: 404, msg: 'Not found' })
+      }
+      try {
+        await Question.destroy({
+          where: { idquestion: id },
+        })
+        return res.status(200).json({ code: 200, msg: 'successfully deleted' })
+      } catch (error) {
+        console.log(error)
+        return res
+          .status(500)
+          .json({ code: 'error', msg: 'Internal Server Error' })
+      }
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(500)
+        .json({ code: 'error', msg: 'Internal Server Error' })
+    }
   },
 }
 

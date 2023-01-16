@@ -13,6 +13,8 @@ server.use(express.json())
 server.use(mainRoutes)
 
 server.use((req, res) => {
-  res.status(404).json({ msg: 'not found' })
+  res.status(404).json({ code: 404, msg: 'end point not found' })
 })
-server.listen(process.env.PORT)
+server.listen(process.env.PORT, () =>
+  console.log(`server started on port ${process.env.PORT} ⭐`),
+)
