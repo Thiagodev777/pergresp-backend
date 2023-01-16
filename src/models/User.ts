@@ -53,10 +53,8 @@ export const User = sequelize.define<UserInstance>(
   },
 )
 
-User.hasMany(Question)
-Question.belongsTo(User)
-
-User.hasMany(Answer)
-Answer.belongsTo(User)
+User.hasMany(Question, { foreignKey: 'id_user' })
+User.hasMany(Answer, { foreignKey: 'id_user' })
+Question.hasMany(Answer, { foreignKey: 'id_question' })
 
 User.sync({ force: false })

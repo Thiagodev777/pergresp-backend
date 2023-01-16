@@ -1,16 +1,17 @@
-import { Router, Response, Request } from 'express'
-import { sequelize } from '../config/database-mysql/mysql'
-
+import { Router } from 'express'
+import questionController from '../controllers/questionController'
 const router = Router()
 
-try {
-  sequelize.authenticate().then(() => console.log('connect with success'))
-} catch (err) {
-  console.log(err)
-}
+router.get('/questions', questionController.findAll)
+router.get('/question/:id', questionController.findOne)
+router.post('/question', questionController.createQuestion)
 
-router.get('/', async (req: Request, res: Response) => {
-  res.json({ msg: 'ok' })
+router.put('/question/:id', (req, res) => {
+  res.send('ok')
+})
+
+router.delete('/question/:id', (req, res) => {
+  res.send('ok')
 })
 
 export default router

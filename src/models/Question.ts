@@ -24,13 +24,15 @@ export const Question = sequelize.define<QuestionInstance>(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    id_user: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     tableName: 'questions',
     timestamps: false,
   },
 )
-Question.hasMany(Answer)
-Answer.belongsTo(Question)
 
 Question.sync({ force: false })
