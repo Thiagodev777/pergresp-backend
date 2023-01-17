@@ -10,9 +10,7 @@ const questionController = {
       return res.status(200).json(questions)
     } catch (error) {
       console.log(error)
-      return res
-        .status(500)
-        .json({ code: 'error', msg: 'Internal Server Error' })
+      return res.status(500).json({ code: 500, msg: 'Internal Server Error' })
     }
   },
 

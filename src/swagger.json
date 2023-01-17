@@ -1,0 +1,84 @@
+{
+  "openapi" : "3.0.0",
+  "swagger": "4.0",
+  "info": {
+    "title": "API de Perguntas e Respostas",
+    "description": "Essa API tem como objetivo servir o backend para um sistema web de Perguntas e Respostas",
+    "termsOfService" : "http://localhost:3333/terms",
+    "contact": {
+      "email" : "antoniobackenddeveloper@gmail.com",
+      "name" : "Antonio Thiago"
+    },
+    "version": "1.0.0"
+  },
+  "basePath" : "/",
+  "servers": [
+    {
+      "url" : "hhttp://localhost:3333/",
+      "description" : "API de testes"
+    }
+  ],
+  "paths": {
+    "questions/": {
+      "get" : {
+        "description": "Listagem de Perguntas",
+        "responses" : {
+          "500" : {
+            "description" : "Internal Server Error",
+            "content": {
+              "application/json" : {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "description": "erro de servidor",
+                      "example": 500
+                    },
+                    "msg": {
+                      "type": "string",
+                      "description": "erro de servidor",
+                      "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Sucesso",
+            "content" : {
+              "application/json": {
+                "schema" : {
+                  "type" : "object",
+                  "properties": {
+                    "idquestion": {
+                      "type": "number",
+                      "description": "Id da Pergunta",
+                      "example": 2
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Titulo da Pergunta",
+                      "example": "Nodejs e bom ?"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Descrição da Pergunta",
+                      "example": "me ajudem node e bom??"
+                    },
+                    "id_user": {
+                      "type": "number",
+                      "description": "Id do Usuario que realizou a Pergunta",
+                      "example": 3
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
