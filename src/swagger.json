@@ -12,14 +12,15 @@
     "version": "1.0.0"
   },
   "basePath" : "/",
+  "schemes": ["http"],
   "servers": [
     {
-      "url" : "hhttp://localhost:3333/",
+      "url" : "http://localhost:3333/",
       "description" : "API de testes"
     }
   ],
   "paths": {
-    "questions/": {
+    "/questions/": {
       "get" : {
         "description": "Listagem de Perguntas",
         "responses" : {
