@@ -6,6 +6,20 @@ const Helpers = {
       return false
     }
   },
+  verifyTypeUser(
+    name: string,
+    age: string,
+    sex: string,
+    city: string,
+    email: string,
+    password: string,
+  ) {
+    if (name && age && sex && city && email && password) {
+      return true
+    } else {
+      return false
+    }
+  },
 }
 
 export default Helpers
