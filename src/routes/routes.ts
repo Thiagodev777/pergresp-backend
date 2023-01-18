@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import answerController from '../controllers/answerController'
 import questionController from '../controllers/questionController'
 import userController from '../controllers/userController'
 const router = Router()
@@ -16,5 +17,12 @@ router.get('/user/:id', userController.findOne)
 router.post('/user', userController.createUser)
 router.put('/user/:id', userController.updateUser)
 router.delete('/user/:id', userController.deleteUser)
+
+// ROUTES ANSWERS
+router.get('/answers', answerController.findAll)
+router.get('/answer/:id', answerController.findOne)
+router.post('/answer', answerController.createAnswer)
+router.put('/answer/:id', answerController.updateAnswer)
+router.delete('/answer/:id', answerController.deleteAnswer)
 
 export default router
